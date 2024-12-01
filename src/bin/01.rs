@@ -10,8 +10,8 @@ pub fn part_one(input: &str) -> Option<u32> {
         .collect::<Vec<_>>()
         .chunks_exact(2)
         .for_each(|pair| {
-            left.push(pair.get(0).unwrap().parse().unwrap());
-            right.push(pair.get(1).unwrap().parse().unwrap());
+            left.push(pair[0].parse().unwrap());
+            right.push(pair[1].parse().unwrap());
         });
     Some(
         left.into_sorted_vec()
@@ -30,8 +30,8 @@ pub fn part_two(input: &str) -> Option<u32> {
         .collect::<Vec<_>>()
         .chunks_exact(2)
         .for_each(|pair| {
-            left.push(pair.get(0).unwrap().parse().unwrap());
-            let r = pair.get(1).unwrap().parse().unwrap();
+            left.push(pair[0].parse().unwrap());
+            let r = pair[1].parse().unwrap();
             right.insert(r, right.get(&r).copied().unwrap_or_default() + 1);
         });
     Some(
