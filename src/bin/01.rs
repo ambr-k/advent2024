@@ -7,11 +7,12 @@ pub fn part_one(input: &str) -> Option<u32> {
     let mut right = BinaryHeap::<u32>::new();
     input
         .split_whitespace()
+        .map(|s| s.parse().unwrap())
         .collect::<Vec<_>>()
         .chunks_exact(2)
         .for_each(|pair| {
-            left.push(pair[0].parse().unwrap());
-            right.push(pair[1].parse().unwrap());
+            left.push(pair[0]);
+            right.push(pair[1]);
         });
     Some(
         left.into_sorted_vec()
@@ -27,12 +28,12 @@ pub fn part_two(input: &str) -> Option<u32> {
     let mut right = HashMap::<u32, u32>::new();
     input
         .split_whitespace()
+        .map(|s| s.parse().unwrap())
         .collect::<Vec<_>>()
         .chunks_exact(2)
         .for_each(|pair| {
-            left.push(pair[0].parse().unwrap());
-            let r = pair[1].parse().unwrap();
-            right.insert(r, right.get(&r).copied().unwrap_or_default() + 1);
+            left.push(pair[0]);
+            *right.entry(pair[1]).or_default() += 1;
         });
     Some(
         left.into_iter()
