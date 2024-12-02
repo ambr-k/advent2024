@@ -21,7 +21,30 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    None
+    Some(
+        input
+            .lines()
+            .map(|line| {
+                line.split_whitespace()
+                    .map(|s| s.parse::<i32>().unwrap())
+                    .collect_vec()
+            })
+            .filter(|levels| {
+                (0..levels.len()).any(|skip_nth| {
+                    let (min, max) = levels
+                        .iter()
+                        .enumerate()
+                        .filter_map(|(n, level)| (n != skip_nth).then_some(level))
+                        .tuple_windows()
+                        .map(|(a, b)| a - b)
+                        .minmax()
+                        .into_option()
+                        .unwrap();
+                    (-3 <= min && max <= -1) || (1 <= min && max <= 3)
+                })
+            })
+            .count() as u32,
+    )
 }
 
 #[cfg(test)]
@@ -37,6 +60,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(4));
     }
 }
